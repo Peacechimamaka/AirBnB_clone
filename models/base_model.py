@@ -1,19 +1,31 @@
 #!/usr/bin/python3
 """This module contains the BaseModel Class
    The BaseModel Class should be inherited by all class in this project
-   Because it contains all common attributes/methods for other classes
-"""
+      Because it contains all common attributes/methods for other classes
+      """
 import uuid
 import datetime
-
-
 class BaseModel:
     """BaseModel class for common attributes and methods"""
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initializer method for BaseModel class"""
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.datetime.now()
-        self.updated_at = self.save()
+        if kwargs:
+            for key, value in kwargs.items():
+                #convert the created_at value from string to datetime object
+                date_format = "%Y-%m-%dT%H:%M:%S.%f"
+                if key == 'created_at':
+                    value = datetime.datetime.strptime(kwargs['created_at'], date_format)
+
+                #convert the created_at value from string to datetime object
+                if key == 'updated_at':
+                    value = datetime.datetime.strptime(kwargs['updated_at'], date_format)
+                if key != '__class__':
+                    setattr(self, key, value)
+
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.datetime.now()
+            self.updated_at = datetime.datetime.now()
 
     def __str__(self):
         """String representation of the BaseModel object"""
