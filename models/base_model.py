@@ -1,10 +1,11 @@
 #!/usr/bin/python3
-"""This module contains the BaseModel Class
+"""
+   This module contains the BaseModel Class
    The BaseModel Class should be inherited by all class in this project
-      Because it contains all common attributes/methods for other classes
-      """
+   Because it contains all common attributes/methods for other classes
+"""
 import uuid
-import datetime
+from datetime import datetime
 
 
 class BaseModel:
@@ -13,22 +14,21 @@ class BaseModel:
         """Initializer method for BaseModel class"""
         if kwargs:
             for key, value in kwargs.items():
-                #convert the created_at value from string to datetime object
-                date_format = "%Y-%m-%dT%H:%M:%S.%f"
+                # convert the created_at value from string to datetime object
+                DateFormat = "%Y-%m-%dT%H:%M:%S.%f"
                 if key == 'created_at':
-                    value = datetime.datetime.strptime(kwargs['created_at'], date_format)
+                    value = datetime.strptime(kwargs['created_at'], DateFormat)
 
-                #convert the created_at value from string to datetime object
+                # convert the created_at value from string to datetime object
                 if key == 'updated_at':
-                    value = datetime.datetime.strptime(kwargs['updated_at'], date_format)
+                    value = datetime.strptime(kwargs['updated_at'], DateFormat)
                 if key != '__class__':
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.datetime.now()
-            self.updated_at = datetime.datetime.now()
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
         from . import storage
-        print('called new')
         storage.new(self)
 
     def __str__(self):
@@ -37,7 +37,7 @@ class BaseModel:
 
     def save(self):
         """Method to update the updated_at attribute with current timestamp"""
-        self.updated_at = datetime.datetime.now()
+        self.updated_at = datetime.now()
         from . import storage
         storage.new(self)
         storage.save()
