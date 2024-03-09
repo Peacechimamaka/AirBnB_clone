@@ -5,6 +5,8 @@
       """
 import uuid
 import datetime
+
+
 class BaseModel:
     """BaseModel class for common attributes and methods"""
     def __init__(self, *args, **kwargs):
@@ -21,11 +23,13 @@ class BaseModel:
                     value = datetime.datetime.strptime(kwargs['updated_at'], date_format)
                 if key != '__class__':
                     setattr(self, key, value)
-
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.datetime.now()
             self.updated_at = datetime.datetime.now()
+        from . import storage
+        print('called new')
+        storage.new(self)
 
     def __str__(self):
         """String representation of the BaseModel object"""
@@ -34,10 +38,15 @@ class BaseModel:
     def save(self):
         """Method to update the updated_at attribute with current timestamp"""
         self.updated_at = datetime.datetime.now()
+        from . import storage
+        storage.new(self)
+        storage.save()
 
     def to_dict(self):
         """Method to return a dictionary representation of the BaseModel"""
-        custom_dict = self.__dict__
+        custom_dict = {}
+        for key, value in self.__dict__.items():
+            custom_dict.update({key: value})
         # Add class name to new dictionary
         custom_dict.update({"__class__": self.__class__.__name__})
         # Retrieve created_at and updated_at values
