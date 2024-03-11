@@ -9,6 +9,7 @@ from models.base_model import BaseModel
 from models import storage
 import shlex
 
+
 class HBNBCommand(cmd.Cmd):
     """
     Command-line interpreter for the HBNB project.
