@@ -8,6 +8,12 @@ import cmd
 from models.base_model import BaseModel
 from models import storage
 import shlex
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
@@ -20,6 +26,14 @@ class HBNBCommand(cmd.Cmd):
         names to their corresponding classes.
     """
     prompt = "(hbnb) "
+
+    def do_quit(self, line):
+        '''Quit command to exit the program'''
+        return True
+
+    def do_EOF(self, line):
+        '''exits the cmd loop'''
+        return True
 
     # Mapping of supported class names to their corresponding class objects.
     supported_classes = {

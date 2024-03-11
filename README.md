@@ -41,4 +41,3 @@ update Listing 1234-5678-9012 price 150
 destroy Listing 1234-5678-9012
 ```
 By following these instructions and examples, users can effectively utilize the command interpreter to manage property listings in the Airbnb Clone project.
-
