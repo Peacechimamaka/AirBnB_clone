@@ -55,18 +55,14 @@ class HBNBCommand(cmd.Cmd):
             return
 
         args = shlex.split(line)
-        if len(args) == 1:
-            if args[0] in HBNBCommand.supported_classes:
-                obj = HBNBCommand.supported_classes[args[0]]()
-                obj.save()
-                print(obj.id)
-                return
-            else:
-                print(f"** class doesn't exist **")
-                return
+        if args[0] in HBNBCommand.supported_classes:
+            obj = HBNBCommand.supported_classes[args[0]]()
+            obj.save()
+            print(obj.id)
+            return
         else:
-            print(f"Usage: Create <class name>")
-
+            print(f"** class doesn't exist **")
+            return
     def do_show(self, line):
         """
         Display details of a specific instance.
@@ -90,22 +86,19 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print(f"** class doesn't exist **")
                 return
-        if len(args) == 2:
-            if args[0] in HBNBCommand.supported_classes:
-                instance_id = f"BaseModel.{args[1]}"
-                # Retrieving all instances from the storage.
-                objs = storage.all()
-                if instance_id in objs:
-                    instance = (HBNBCommand.supported_classes[args[0]]
-                                (**objs[instance_id]))
-                    print(instance)
-                    return
-                else:
-                    print(f"** no instance found **")
-                    return
-        else:
-            print("Usage: Show <class name> <instance id>")
-            return
+        if args[0] in HBNBCommand.supported_classes:
+            instance_id = args[1]
+            instance_key = f"BaseModel.{instance_id}"
+            # Retrieving all instances from the storage.
+            objs = storage.all()
+            if instance_key in objs:
+                instance = (HBNBCommand.supported_classes[args[0]]
+                            (**objs[instance_key]))
+                print(instance)
+                return
+            else:
+                print(f"** no instance found **")
+                return
 
     def do_destroy(self, line):
         """
@@ -129,21 +122,19 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print(f"** class doesn't exist **")
                 return
-        if len(args) == 2:
-            if args[0] in HBNBCommand.supported_classes:
-                instance_id = f"BaseModel.{args[1]}"
-                objs = storage.all()
-                if instance_id in objs:
-                    del objs[instance_id]
-                    storage.save()
-                else:
-                    print(f"** no instance found **")
-                    return
+        if args[0] in HBNBCommand.supported_classes:
+            instance_id = args[1]
+            instance_key = f"BaseModel.{instance_key}"
+            objs = storage.all()
+            if instance_key in objs:
+                del objs[instance_key]
+                storage.save()
             else:
-                print(f"** class doesn't exist **")
+                print(f"** no instance found **")
                 return
         else:
-            print(f"Usage: destroy <class name> <instance id>")
+            print(f"** class doesn't exist **")
+            return
 
     def do_all(self, line):
         """
@@ -166,20 +157,70 @@ class HBNBCommand(cmd.Cmd):
             print(instances)
             return
         args = shlex.split(line)
-        if len(args) == 1:
+        if args[0] in HBNBCommand.supported_classes:
+            for key, value in objs.items():
+                if value['__class__'] == args[0]:
+                    instance = (HBNBCommand.supported_classes[objs[key]
+                                ['__class__']](**value))
+                    instances.append(instance)
+            print(instances)
+            return
+        else:
+            print(f"** class doesn't exist **")
+            return
+
+    def do_update(self, line):
+        """
+        Update attributes of an instance.
+
+        Args:
+            line (str): The input command line containing class name,
+            instance id, attribute name, and new value.
+
+        Returns:
+            None
+        """
+        if not line:
+            print("** class name missing **")
+            return
+
+        args = shlex.split(line)
+        if len(args) < 2:
             if args[0] in HBNBCommand.supported_classes:
-                for key, value in objs.items():
-                    if value['__class__'] == args[0]:
-                        instance = (HBNBCommand.supported_classes[objs[key]
-                                    ['__class__']](**value))
-                        instances.append(instance)
-                print(instances)
+                print("** instance id missing **")
                 return
             else:
-                print(f"** class doesn't exist **")
-                return
-        else:
-            print(f"Usage: all (class name)")
+                print("** class doesn't exist **")
+            return
+
+        class_name = args[0]
+        instance_id = args[1]
+        instance_key = f"BaseModel.{instance_id}"
+        objs = storage.all()
+
+        if class_name not in HBNBCommand.supported_classes:
+            print("** class doesn't exist **")
+            return
+
+        if instance_key not in objs:
+            print("** no instance found **")
+            return
+
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return
+
+        attribute_name = args[2]
+        if len(args) < 4:
+            print("** value missing **")
+            return
+
+        new_value = args[3]
+
+        # Update the attribute value
+        obj = objs[instance_key]
+        obj[attribute_name] = eval(new_value)
+        storage.save()
 
     def do_EOF(self, line):
         """

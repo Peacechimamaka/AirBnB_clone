@@ -4,7 +4,7 @@
     "created_at": "2024-03-09T13:28:55.029513",
     "updated_at": "2024-03-09T13:28:55.029690",
     "name": "My_First_Model",
-    "my_number": 89,
+    "my_number": 40,
     "__class__": "BaseModel"
   },
   "BaseModel.a1c99902-241e-4db0-96cf-edd7d1d91a21": {
