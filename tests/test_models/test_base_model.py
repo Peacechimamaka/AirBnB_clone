@@ -73,3 +73,6 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(instance_dict['updated_at'], str)
         self.assertIsInstance(instance_dict['__class__'], str)
         self.assertIsInstance(instance_dict['number'], int)
+        new_obj = BaseModel(**instance_dict)
+        self.assertEqual(self.instance.number, new_obj.number)
+        self.assertFalse(self.instance is new_obj)
