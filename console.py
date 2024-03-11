@@ -49,6 +49,14 @@ class HBNBCommand(cmd.Cmd):
         else:
             print(f"** class doesn't exist **")
             return
+
+    def help_create(self):
+        """Create Help Method"""
+        print(f"Create a new instance of a supported class.\n"
+              "\nUsage: create <class name>\n"
+              "\nExample:"
+              "\ncreate BaseModel")
+
     def do_show(self, line):
         """
         Display details of a specific instance.
@@ -86,6 +94,13 @@ class HBNBCommand(cmd.Cmd):
                 print(f"** no instance found **")
                 return
 
+    def help_show(self):
+        """help method of Show"""
+        print(f"Display details of a specific instance.\n"
+              "\nUsage: show <class name> <instance id>\n"
+              "\nExample:"
+              "\nshow BaseModel 1234-5678-9012")
+
     def do_destroy(self, line):
         """
         Delete an instance based on the class name and instance id.
@@ -122,6 +137,13 @@ class HBNBCommand(cmd.Cmd):
             print(f"** class doesn't exist **")
             return
 
+    def help_destroy(self):
+        """Help Method of Destroy"""
+        print(f"Delete an instance based on the class name and instance id.\n"
+              "\nUsage: destroy <class name> <instance id>"
+              "\nExample:"
+              "\ndestroy BaseModel 1234-5678-9012")
+
     def do_all(self, line):
         """
         Display details of all instances or instances of a specific class.
@@ -154,6 +176,16 @@ class HBNBCommand(cmd.Cmd):
         else:
             print(f"** class doesn't exist **")
             return
+
+    def help_all(self):
+        """Help method of all)"""
+        print(f"Display all instances or instances of a specified class.\n"
+              "\nUsage: all [<class name>]\n"
+              "\nIf no class name is provided, all instances "
+              "will be displayed\n"
+              "\nExample:"
+              "\nall"
+              "\nall BaseModel")
 
     def do_update(self, line):
         """
@@ -208,6 +240,14 @@ class HBNBCommand(cmd.Cmd):
         obj[attribute_name] = eval(new_value)
         storage.save()
 
+    def do_update(self):
+        """Help method for update"""
+        print(f"Update attributes of an instance.\n"
+              "\nUsage: update <class name> <instance id> <attribute name>"
+              "<new value>\n"
+              "\nExample:"
+              "\nupdate BaseModel 1234-5678-9012 name 'New Name'")
+
     def do_EOF(self, line):
         """
         Exit the command-line interpreter when encountering EOF (Ctrl+D).
@@ -220,6 +260,14 @@ class HBNBCommand(cmd.Cmd):
         """
         return True
 
+    def help_EOF(self):
+        """help method for EOF"""
+        print(f"Exit the command-line interpreter when encountering"
+              " EOF (Ctrl+D).\n"
+              "\nUsage: Press Ctrl+D\n"
+              "\nExample:"
+              "\nPress Ctrl+D to exit")
+
     def do_quit(self, line):
         """
         Exit the command-line interpreter.
@@ -231,6 +279,13 @@ class HBNBCommand(cmd.Cmd):
             bool: True to exit the interpreter.
         """
         return True
+
+    def help_quit(self):
+        """help method for quit"""
+        print(f"Exit the command-line interpreter.\n"
+              "\nUsage: quit\n"
+              "\nExample:"
+              "\nquit")
 
 
 if __name__ == '__main__':
