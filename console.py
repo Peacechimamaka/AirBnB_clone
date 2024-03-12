@@ -296,6 +296,13 @@ class HBNBCommand(cmd.Cmd):
               "\nExample:"
               "\nquit")
 
+    def emptyline(self):
+        """
+        When an empty line + ENTER shouldn’t
+        execute anything
+        """
+        pass
+
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:
