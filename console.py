@@ -141,6 +141,7 @@ class HBNBCommand(cmd.Cmd):
             if instance_key in objs:
                 del objs[instance_key]
                 storage.save()
+                return
             else:
                 print(f"** no instance found **")
                 return
@@ -240,12 +241,14 @@ class HBNBCommand(cmd.Cmd):
             return
 
         attribute_name = args[2]
+        if attribute_name not in objs[instance_key]:
+            print(f" **no attribute name found **")
+            return
         if len(args) < 4:
             print("** value missing **")
             return
 
         value = args[3]
-
         convertable_types = {
                 "<class 'str'>": str,
                 "<class 'int'>": int,
