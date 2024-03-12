@@ -102,6 +102,9 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print(f"** no instance found **")
                 return
+        else:
+            print(f"** class doesn't exist **")
+            return
 
     def help_show(self):
         """help method of Show"""
@@ -134,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
                 return
         if args[0] in HBNBCommand.supported_classes:
             instance_id = args[1]
-            instance_key = f"BaseModel.{instance_key}"
+            instance_key = f"BaseModel.{instance_id}"
             objs = storage.all()
             if instance_key in objs:
                 del objs[instance_key]
@@ -179,7 +182,7 @@ class HBNBCommand(cmd.Cmd):
                 if value['__class__'] == args[0]:
                     instance = (HBNBCommand.supported_classes[objs[key]
                                 ['__class__']](**value))
-                    instances.append(instance)
+                    instances.append(instance.__str__())
             print(instances)
             return
         else:
@@ -249,7 +252,7 @@ class HBNBCommand(cmd.Cmd):
         obj[attribute_name] = eval(new_value)
         storage.save()
 
-    def do_update(self):
+    def help_update(self):
         """Help method for update"""
         print(f"Update attributes of an instance.\n"
               "\nUsage: update <class name> <instance id> <attribute name>"
