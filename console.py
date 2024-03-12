@@ -244,12 +244,23 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return
 
-        new_value = args[3]
+        value = args[3]
 
+        convertable_types = {
+                "<class 'str'>": str,
+                "<class 'int'>": int,
+                "<class 'float'>": float,
+                "<class 'dict'>": dict,
+                "<class 'list'>": list,
+            }
         # Update the attribute value
-        obj = objs[instance_key]
-        obj[attribute_name] = eval(new_value)
-        storage.save()
+        obj = HBNBCommand.supported_classes[class_name](**objs[instance_key])
+        value_type = type(obj.__dict__[attribute_name])
+        value_type = str(value_type)
+        if value_type in convertable_types:
+            new_value = convertable_types[value_type](value)
+            setattr(obj, attribute_name, new_value)
+        obj.save()
 
     def help_update(self):
         """Help method for update"""
