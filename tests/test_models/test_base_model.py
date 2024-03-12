@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-    This module provides unit tests for the BaseModel class.
+This module provides unit tests for the BaseModel class.
 """
 import unittest
 from models.base_model import BaseModel
@@ -16,8 +16,8 @@ class TestBaseModel(unittest.TestCase):
         """
         setUp method initializes a BaseModel instance for each test.
         """
-        self.instance = BaseModel()
-        self.instance.number = 89
+    self.instance = BaseModel()
+    self.instance.number = 89
 
     def test_id(self):
         """
@@ -57,22 +57,22 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(new_time.replace(microsecond=0),
                          self.instance.updated_at.replace(microsecond=0))
 
-    def test_to_dict(self):
-        """
-        Test if the to_dict() method returns a dictionary
-        with expected keys and values
-        """
-        instance_dict = self.instance.to_dict()
-        self.assertIn('__class__', instance_dict)
-        self.assertIn('id', instance_dict)
-        self.assertIn('created_at', instance_dict)
-        self.assertIn('updated_at', instance_dict)
-        self.assertIn('number', instance_dict)
-        self.assertIsInstance(instance_dict['id'], str)
-        self.assertIsInstance(instance_dict['created_at'], str)
-        self.assertIsInstance(instance_dict['updated_at'], str)
-        self.assertIsInstance(instance_dict['__class__'], str)
-        self.assertIsInstance(instance_dict['number'], int)
-        new_obj = BaseModel(**instance_dict)
-        self.assertEqual(self.instance.number, new_obj.number)
-        self.assertFalse(self.instance is new_obj)
+        def test_to_dict(self):
+            """
+            Test if the to_dict() method returns a dictionary
+            with expected keys and values
+            """
+            instance_dict = self.instance.to_dict()
+            self.assertIn('__class__', instance_dict)
+            self.assertIn('id', instance_dict)
+            self.assertIn('created_at', instance_dict)
+            self.assertIn('updated_at', instance_dict)
+            self.assertIn('number', instance_dict)
+            self.assertIsInstance(instance_dict['id'], str)
+            self.assertIsInstance(instance_dict['created_at'], str)
+            self.assertIsInstance(instance_dict['updated_at'], str)
+            self.assertIsInstance(instance_dict['__class__'], str)
+            self.assertIsInstance(instance_dict['number'], int)
+            new_obj = BaseModel(**instance_dict)
+            self.assertEqual(self.instance.number, new_obj.number)
+            self.assertFalse(self.instance is new_obj)
