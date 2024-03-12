@@ -139,7 +139,7 @@ class HBNBCommand(cmd.Cmd):
             instance_key = f"BaseModel.{instance_id}"
             objs = storage.all()
             if instance_key in objs:
-                del objs[instance_key]
+                del storage.all()[instance_key]
                 storage.save()
                 return
             else:
@@ -241,9 +241,6 @@ class HBNBCommand(cmd.Cmd):
             return
 
         attribute_name = args[2]
-        if attribute_name not in objs[instance_key]:
-            print(f" **no attribute name found **")
-            return
         if len(args) < 4:
             print("** value missing **")
             return
