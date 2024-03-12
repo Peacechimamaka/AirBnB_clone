@@ -22,7 +22,7 @@ class FileStorage:
             __file_path (str): The path to the JSON file used for storage.
             __objects (dict): A dictionary to store objects in memory.
     """
-    __file_path = "file.json"
+    __file_path = "models/engine/file.json"
     __objects = {}
 
     def all(self):
