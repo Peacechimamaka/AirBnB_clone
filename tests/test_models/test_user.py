@@ -4,8 +4,9 @@
 from models.user import User
 import unittest
 
+
 class TestUser(unittest.TestCase):
-    '''TestUser tests the attributes 
+    '''TestUser tests the attributes
     of the user class'''
 
     def setUp(self):
@@ -32,6 +33,3 @@ class TestUser(unittest.TestCase):
         '''test_last_name tests the last_name of the user'''
         self.assertIsInstance(self.instance.last_name, str)
         self.assertEqual(self.instance.last_name, '')
-
-if __name__ == '__main__':
-    unittest.main()
