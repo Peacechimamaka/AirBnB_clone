@@ -6,6 +6,12 @@
 """
 import cmd
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models import storage
 import shlex
 
@@ -21,17 +27,15 @@ class HBNBCommand(cmd.Cmd):
     """
     prompt = "(hbnb) "
 
-    def do_quit(self, line):
-        '''Quit command to exit the program'''
-        return True
-
-    def do_EOF(self, line):
-        '''exits the cmd loop'''
-        return True
-
     # Mapping of supported class names to their corresponding class objects.
     supported_classes = {
-            'BaseModel': BaseModel
+            'BaseModel': BaseModel,
+            'User': User,
+            'State': State,
+            'City': City,
+            'Amenity': Amenity,
+            'Place': Place,
+            'Review': Review
     }
 
     def do_create(self, line):
@@ -90,7 +94,7 @@ class HBNBCommand(cmd.Cmd):
                 return
         if args[0] in HBNBCommand.supported_classes:
             instance_id = args[1]
-            instance_key = f"BaseModel.{instance_id}"
+            instance_key = f"{args[0]}.{instance_id}"
             # Retrieving all instances from the storage.
             objs = storage.all()
             if instance_key in objs:
@@ -136,7 +140,7 @@ class HBNBCommand(cmd.Cmd):
                 return
         if args[0] in HBNBCommand.supported_classes:
             instance_id = args[1]
-            instance_key = f"BaseModel.{instance_id}"
+            instance_key = f"{args[0]}.{instance_id}"
             objs = storage.all()
             if instance_key in objs:
                 del storage.all()[instance_key]
@@ -225,7 +229,7 @@ class HBNBCommand(cmd.Cmd):
 
         class_name = args[0]
         instance_id = args[1]
-        instance_key = f"BaseModel.{instance_id}"
+        instance_key = f"{args[0]}.{instance_id}"
         objs = storage.all()
 
         if class_name not in HBNBCommand.supported_classes:
