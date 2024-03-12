@@ -9,7 +9,7 @@ for obj_id in all_objs.keys():
     print(obj)
 
 new_instance = BaseModel(**obj)
-print(new_instance.id ==  obj['id'])
+print(new_instance.id == obj['id'])
 print("-- Create a new object --")
 my_model = BaseModel()
 my_model.name = "My_First_Model"
