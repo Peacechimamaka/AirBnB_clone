@@ -1,8 +1,15 @@
 #!/usr/bin/python3
+"""
+This module contains the definition of the Place class, which represent a place
+"""
 from models.base_model import BaseModel
 
 
 class Place(BaseModel):
+    """
+    A class representing a place. It inherits from BaseModel and adds
+    attributes specific to a place such as city_id, name, description, etc.
+    """
     city_id = ""
     user_id = ""
     name = ""
@@ -16,4 +23,7 @@ class Place(BaseModel):
     amenity_ids = []
 
     def __Str__(self):
+        """
+        Return a string representation of the Place object.
+        """
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
