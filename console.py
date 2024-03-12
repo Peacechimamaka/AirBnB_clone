@@ -101,6 +101,9 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print(f"** no instance found **")
                 return
+        else:
+            print(f"** class doesn't exist **")
+            return
 
     def help_show(self):
         """help method of Show"""
@@ -133,11 +136,12 @@ class HBNBCommand(cmd.Cmd):
                 return
         if args[0] in HBNBCommand.supported_classes:
             instance_id = args[1]
-            instance_key = f"BaseModel.{instance_key}"
+            instance_key = f"BaseModel.{instance_id}"
             objs = storage.all()
             if instance_key in objs:
-                del objs[instance_key]
+                del storage.all()[instance_key]
                 storage.save()
+                return
             else:
                 print(f"** no instance found **")
                 return
@@ -178,7 +182,7 @@ class HBNBCommand(cmd.Cmd):
                 if value['__class__'] == args[0]:
                     instance = (HBNBCommand.supported_classes[objs[key]
                                 ['__class__']](**value))
-                    instances.append(instance)
+                    instances.append(instance.__str__())
             print(instances)
             return
         else:
@@ -241,14 +245,24 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return
 
-        new_value = args[3]
-
+        value = args[3]
+        convertable_types = {
+                "<class 'str'>": str,
+                "<class 'int'>": int,
+                "<class 'float'>": float,
+                "<class 'dict'>": dict,
+                "<class 'list'>": list,
+            }
         # Update the attribute value
-        obj = objs[instance_key]
-        obj[attribute_name] = eval(new_value)
-        storage.save()
+        obj = HBNBCommand.supported_classes[class_name](**objs[instance_key])
+        value_type = type(obj.__dict__[attribute_name])
+        value_type = str(value_type)
+        if value_type in convertable_types:
+            new_value = convertable_types[value_type](value)
+            setattr(obj, attribute_name, new_value)
+        obj.save()
 
-    def do_update(self):
+    def help_update(self):
         """Help method for update"""
         print(f"Update attributes of an instance.\n"
               "\nUsage: update <class name> <instance id> <attribute name>"
@@ -294,6 +308,13 @@ class HBNBCommand(cmd.Cmd):
               "\nUsage: quit\n"
               "\nExample:"
               "\nquit")
+
+    def emptyline(self):
+        """
+        When an empty line + ENTER shouldn’t
+        execute anything
+        """
+        pass
 
 
 if __name__ == '__main__':
