@@ -8,6 +8,7 @@ import cmd
 from models.base_model import BaseModel
 from models import storage
 import shlex
+import sys
 
 
 class HBNBCommand(cmd.Cmd):
@@ -297,4 +298,7 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == '__main__':
-    HBNBCommand().cmdloop()
+    if len(sys.argv) == 1:
+        HBNBCommand().cmdloop()
+    else:
+        HBNBCommand().onecmd(' '.join(sys.argv[1:]))
